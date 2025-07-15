@@ -1,0 +1,186 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/go_load.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "go_loadAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "account_name": {
+          "type": "string"
+        }
+      }
+    },
+    "go_loadCreateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "go_loadCreateDownloadTaskResponse": {
+      "type": "object",
+      "properties": {
+        "download_task": {
+          "$ref": "#/definitions/go_loadDownloadTask"
+        }
+      }
+    },
+    "go_loadCreateSessionResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/go_loadAccount"
+        }
+      }
+    },
+    "go_loadDeleteDownloadTaskResponse": {
+      "type": "object"
+    },
+    "go_loadDownloadStatus": {
+      "type": "string",
+      "enum": [
+        "UndefinedStatus",
+        "Pending",
+        "Downloading",
+        "Failed",
+        "Success"
+      ],
+      "default": "UndefinedStatus"
+    },
+    "go_loadDownloadTask": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "of_account": {
+          "$ref": "#/definitions/go_loadAccount"
+        },
+        "download_type": {
+          "$ref": "#/definitions/go_loadDownloadType"
+        },
+        "url": {
+          "type": "string"
+        },
+        "download_status": {
+          "$ref": "#/definitions/go_loadDownloadStatus"
+        }
+      }
+    },
+    "go_loadDownloadType": {
+      "type": "string",
+      "enum": [
+        "UndefinedType",
+        "HTTP"
+      ],
+      "default": "UndefinedType"
+    },
+    "go_loadGetDownloadTaskFileResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "go_loadGetDownloadTaskListResponse": {
+      "type": "object",
+      "properties": {
+        "download_task_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/go_loadDownloadTask"
+          }
+        },
+        "total_download_task_count": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "go_loadUpdateDownloadTaskResponse": {
+      "type": "object",
+      "properties": {
+        "download_task": {
+          "$ref": "#/definitions/go_loadDownloadTask"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

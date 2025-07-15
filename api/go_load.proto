@@ -1,0 +1,99 @@
+syntax = "proto3";
+package go_load;
+option go_package = "grpc/go_load";
+
+service GoLoadService {
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse) {}
+    rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse) {}
+    rpc CreateDownloadTask(CreateDownloadTaskRequest) returns (CreateDownloadTaskResponse) {}
+    rpc GetDownloadTaskList(GetDownloadTaskListRequest) returns (GetDownloadTaskListResponse) {}
+    rpc UpdateDownloadTask(UpdateDownloadTaskRequest) returns (UpdateDownloadTaskResponse) {}
+    rpc DeleteDownloadTask(DeleteDownloadTaskRequest) returns (DeleteDownloadTaskResponse) {}
+    rpc GetDownloadTaskFile(GetDownloadTaskFileRequest) returns (stream GetDownloadTaskFileResponse) {}
+}
+enum DownloadType {
+    UndefinedType = 0;
+    HTTP = 1;
+}
+enum DownloadStatus {
+    UndefinedStatus = 0;
+    Pending = 1;
+    Downloading = 2;
+    Failed = 3;
+    Success = 4;
+}
+message Account {
+    uint64 id = 1;
+    string account_name = 2;
+}
+message DownloadTask {
+    uint64 id = 1;
+    Account of_account = 2;
+    DownloadType download_type = 3;
+    string url = 4;
+    DownloadStatus download_status = 5;
+}
+message CreateAccountRequest {
+    string account_name = 1;
+    string password = 2;
+}
+message CreateAccountResponse {
+    uint64 account_id = 1;
+}
+message CreateSessionRequest {
+    string account_name = 1;
+    string password = 2;
+}
+message CreateSessionResponse {
+    Account account = 1;
+}
+message CreateDownloadTaskRequest {
+    DownloadType download_type = 1;
+    string url = 2;
+}
+message CreateDownloadTaskResponse {
+    DownloadTask download_task = 1;
+}
+message GetDownloadTaskListRequest {
+    uint64 offset = 1;
+    uint64 limit = 2;
+}
+message GetDownloadTaskListResponse {
+    repeated DownloadTask download_task_list = 1;
+    uint64 total_download_task_count = 2;
+}
+message UpdateDownloadTaskRequest {
+    uint64 download_task_id = 1;
+    string url = 2;
+}
+message UpdateDownloadTaskResponse {
+    DownloadTask download_task = 1;
+}
+message DeleteDownloadTaskRequest {
+    uint64 download_task_id = 1;
+}
+message DeleteDownloadTaskResponse {}
+message GetDownloadTaskFileRequest {
+    uint64 download_task_id = 1;
+}
+message GetDownloadTaskFileResponse {
+    bytes data = 1;
+}
+
+// generate:
+//     protoc -I=. ;
+//             --go_out=internal/generated ;
+//             --go-grpc_out=internal/generated ;
+//             --grpc-gateway_out=internal/generated ;
+//             --grpc-gateway_opt generate_unbound_methods=true ;
+//             --openapiv2_out . ;
+//             --openapiv2_opt generate_unbound_methods=true ;
+//             api/go_load.proto
+
+//             protoc -I="." --go_out=internal/generated api/go_load.proto
+//             protoc -I="." --go-grpc_out=internal/generated api/go_load.proto
+//             protoc -I="." --grpc-gateway_out=internal/generated api/go_load.proto --grpc-gateway_opt generate_unbound_methods=true
+//             protoc -I="." --openapiv2_out=. api/go_load.proto --openapiv2_opt generate_unbound_methods=true
+//             protoc -I="." --validate_out="lang=go:internal/generated"
+
+//             protoc -I="." --swagger_out=logtostderr=true:.  api/go_load.proto
