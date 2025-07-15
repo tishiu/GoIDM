@@ -35,6 +35,7 @@ GoLoad utilizes a microservices architecture with clear separation of concerns:
 | (File Operations) |
 +-------------------+
 ```
+<img width="953" height="555" alt="image" src="https://github.com/user-attachments/assets/127305a2-e7af-4148-b2b1-451c22628fc8" />
 
 ### Technology Stack
 - **Backend**: Golang 1.18+
